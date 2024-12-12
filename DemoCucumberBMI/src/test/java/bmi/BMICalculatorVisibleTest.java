@@ -8,34 +8,42 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Dimension;
 
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BMICalculatorTest {
+/**
+ * Chrome 瀏覽器將會被啟動，執行測試
+ */
+
+public class BMICalculatorVisibleTest {
     private WebDriver driver;
-    String testedURL= "http://localhost:63344/DemoWebTesting/bmi.html?_ijt=4seqbc8dhrq3nul33lm07llqhm&_ij_reload=RELOAD_ON_SAVE";
+    String testedURL= "http://127.0.0.1:5500/lab/u09_web_testing/bmi.html";
 
     @BeforeEach
     void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(4000));
+        driver.manage().window().setSize(new Dimension(1200, 800));
+
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown() throws InterruptedException {
         if (driver != null) {
+            Thread.sleep(4000); // 延遲 4 秒
             driver.quit();
         }
     }
 
     @Test
-    void testBMICalculator() {
+    void testBMICalculator() throws InterruptedException {
         // 開啟 BMI 計算器頁面
         driver.get(testedURL);
 
@@ -54,6 +62,7 @@ public class BMICalculatorTest {
         weightInput.sendKeys("67");
 
         // 提交
+        Thread.sleep(2000);
         submitButton.click();
 
         // 驗證結果
@@ -68,7 +77,7 @@ public class BMICalculatorTest {
     }
 
     @Test
-    void testClearForm() {
+    void testClearForm() throws InterruptedException {
         // 開啟 BMI 計算器頁面
         driver.get(testedURL);
 
@@ -80,11 +89,15 @@ public class BMICalculatorTest {
         WebElement clearButton = driver.findElement(By.xpath("//button[text()='清除資料']"));
 
         // 填寫表單
-        nameInput.sendKeys("測試者");
-        heightInput.sendKeys("170");
-        weightInput.sendKeys("65");
+        nameInput.clear();
+        nameInput.sendKeys("Nick");
+        heightInput.clear();
+        heightInput.sendKeys("172");
+        weightInput.clear();
+        weightInput.sendKeys("67");
 
         // 按下提交
+        Thread.sleep(2000);
         submitButton.click();
 
         // 等待結果顯示
@@ -97,6 +110,7 @@ public class BMICalculatorTest {
 
         assertNotEquals("", bmiText);
 
+        Thread.sleep(2000); // 延遲 4 秒
         clearButton.click();
 
         // 驗證輸入欄位已清空

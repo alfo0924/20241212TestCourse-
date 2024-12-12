@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BMICalculatorVisibleTest {
     private WebDriver driver;
-    String testedURL= "http://127.0.0.1:5500/lab/u09_web_testing/bmi.html";
+    String testedURL= "http://localhost:63344/DemoWebTesting/bmi.html?_ijt=rjk64sfnf351f32ldsc2d243pp&_ij_reload=RELOAD_ON_SAVE";
 
     @BeforeEach
     void setUp() {
